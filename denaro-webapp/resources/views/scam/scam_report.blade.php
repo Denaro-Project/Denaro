@@ -21,12 +21,13 @@
                             <label for="email" class="form-label">
                                 Your Email Address <span class="text-danger">*</span>
                             </label>
-                            <input type="email" 
-                                   class="form-control @error('email') is-invalid @enderror" 
-                                   name="email" 
-                                   id="email" 
-                                   value="{{ old('email') }}"
-                                   required>
+                <input type="email" 
+                    class="form-control @error('email') is-invalid @enderror" 
+                    name="email" 
+                    id="email" 
+                    value="{{ old('email', auth()->check() ? auth()->user()->email : '') }}"
+                    required
+                    @auth readonly @endauth>
                             @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -122,6 +123,34 @@
                             @enderror
                         </div>
 
+                        <!-- Did you lose money? -->
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" 
+                                   class="form-check-input @error('lost_money') is-invalid @enderror" 
+                                   name="lost_money" 
+                                   id="lost_money"
+                                   value="1"
+                                   {{ old('lost_money') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="lost_money">Did you lose money?</label>
+                            @error('lost_money')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Amount lost (conditional) -->
+                        <div class="mb-3" id="amount_lost_div" style="display: none;">
+                            <label for="amount_lost" class="form-label">How much did you lose? (USD)</label>
+                            <input type="number" step="0.01" min="0" 
+                                   class="form-control @error('amount_lost') is-invalid @enderror" 
+                                   name="amount_lost" 
+                                   id="amount_lost"
+                                   value="{{ old('amount_lost') }}"
+                                   placeholder="e.g. 250.00">
+                            @error('amount_lost')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <!-- Submit Button -->
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg">
@@ -142,6 +171,10 @@
         const customScamTypeDiv = document.getElementById('custom_scam_type_div');
         const customScamTypeInput = document.getElementById('custom_scam_type');
 
+        const lostMoneyCheckbox = document.getElementById('lost_money');
+        const amountLostDiv = document.getElementById('amount_lost_div');
+        const amountLostInput = document.getElementById('amount_lost');
+
         function toggleCustomInput() {
             if (scamTypeSelect.value === 'other') {
                 customScamTypeDiv.style.display = 'block';
@@ -158,6 +191,26 @@
 
         // Listen for changes
         scamTypeSelect.addEventListener('change', toggleCustomInput);
+
+        // Toggle amount field when checkbox changes
+        function toggleAmountField() {
+            if (lostMoneyCheckbox && amountLostDiv && amountLostInput) {
+                if (lostMoneyCheckbox.checked) {
+                    amountLostDiv.style.display = 'block';
+                    amountLostInput.required = true;
+                } else {
+                    amountLostDiv.style.display = 'none';
+                    amountLostInput.required = false;
+                    // don't clear value so user can retain it if they toggle back on
+                }
+            }
+        }
+
+        if (lostMoneyCheckbox) {
+            // Initialize based on old() values or checkbox state
+            toggleAmountField();
+            lostMoneyCheckbox.addEventListener('change', toggleAmountField);
+        }
     });
 </script>
 @endsection

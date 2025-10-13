@@ -5,6 +5,11 @@ use App\Http\Controllers\TrustAnalysisController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
+    return view('auth.authentication');
+});
+
+// Guest-friendly home route (used by 'Continue as Guest')
+Route::get('/home', function () {
     return view('home');
 });
 

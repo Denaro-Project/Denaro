@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrustAnalysisController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ImageController;
 
 Route::get('/', function () {
     return view('auth.authentication');
@@ -22,6 +23,16 @@ Route::group(['prefix' => 'scam'], function () {
         return view('scam.scam_info');
     })->name('scam.info');
 });
+
+Route::get('/image-scan', function () {
+    return view('image-scan');
+})->name('image-scan');
+
+Route::get('/image/upload', function () {
+    return view('image_upload');
+})->name('image.upload.form');
+
+Route::post('/image/upload', [ImageController::class, 'upload'])->name('upload.image');
 
 Route::get('/trust-analysis', function () {
     return view('trust_analysis');

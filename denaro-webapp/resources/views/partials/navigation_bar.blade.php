@@ -9,6 +9,9 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 {{-- TODO: Create more understandable links --}}
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('image-scan') }}">Image Scan</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->is('report-scam') ? 'active' : '' }}" href="{{ route('scam.report') }}">Report a scam</a>
                 </li>
                 <li class="nav-item">

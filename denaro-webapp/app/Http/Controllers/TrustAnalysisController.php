@@ -14,7 +14,7 @@ class TrustAnalysisController extends Controller
         $url = $request->input('url');
 
         // Send URL to Python API
-        $response = Http::post('http://127.0.0.1:5000/analyze', [
+        $response = Http::post('http://127.0.0.1:5000/analyze', [ //Replace with your Python API endpoint
             'url' => $url,
         ]);
 

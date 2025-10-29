@@ -1,5 +1,5 @@
 class DomainCheck:
-    FULL_TRUST_SUFFIXES = [".bn"]  # Brunei domains
+    FULL_TRUST_SUFFIXES = [".bn", ".com"]  # Brunei domains
     PARTIAL_TRUST_SUFFIXES = [".gov", ".edu"]  # Recognized but not necessarily Brunei
 
     def __init__(self, domain: str):
